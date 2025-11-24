@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Flipbook • Lesson 1: Personality</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0f1d;
+      --bg2:#12172b;
+      --paper:#fffaf2;
+      --ink:#1a1f2f;
+      --accent:#7c5cff;
+      --accent2:#00e6a7;
+      --accent3:#ffb703;
+      --danger:#ff5c7a;
+      --gold:#ffd166;
+      --radius:18px;
+      --shadow:0 14px 38px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0; background:
+      radial-gradient(1200px 800px at 15% 10%, #141a34 0%, #0b0f1d 55%, #070a14 100%);
+      color:#eef2ff; font-family:Poppins, Vazirmatn, system-ui, sans-serif;}
+    a{color:var(--accent)}
+    .app{max-width:1200px; margin:26px auto; padding:16px}
+
+    /* Header */
+    .header{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
+    .brand{display:flex; align-items:center; gap:14px}
+    .logo{
+      width:48px; height:48px; border-radius:50%;
+      background:conic-gradient(from 180deg, #7c5cff, #00e6a7, #ffd166, #7c5cff);
+      box-shadow:0 0 22px #7c5cff88;
+      animation:spin 7s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .title h1{margin:0; font-weight:800; letter-spacing:.4px}
+    .subtitle{margin:0; opacity:.88; font-size:.95rem}
+
+    /* Controls */
+    .controls{display:flex; gap:8px; flex-wrap:wrap}
+    .btn{
+      border:none; padding:10px 14px; border-radius:14px; cursor:pointer; font-weight:700;
+      background:linear-gradient(135deg, #232743, #141831);
+      color:#eaf1ff; box-shadow:var(--shadow); transition:.25s transform, .25s box-shadow, .2s filter;
+    }
+    .btn:hover{transform:translateY(-2px); box-shadow:0 16px 42px rgba(0,0,0,.55); filter:brightness(1.08)}
+    .btn.accent{background:linear-gradient(135deg, var(--accent), #5a3cff)}
+    .btn.green{background:linear-gradient(135deg, var(--accent2), #00c48a); color:#022018}
+    .btn.gold{background:linear-gradient(135deg, var(--gold), #ffb703); color:#2b1700}
+    .btn.outline{background:transparent; border:1px solid #3c456e}
+
+    /* Flipbook container */
+    .flipbook-wrap{position:relative; perspective:1600px; margin-top:18px}
+    .flipbook{position:relative; width:100%; height:680px; display:flex; align-items:stretch}
+    .page{
+      width:100%; background:linear-gradient(180deg, #fffdf9 0%, #fff4e2 100%);
+      color:var(--ink); border-radius:var(--radius); box-shadow:var(--shadow);
+      position:relative; overflow:hidden;
+    }
+    .page-inner{padding:22px; height:100%; overflow:auto}
+    .page h2{margin:0 0 10px; font-weight:800; font-size:1.35rem}
+    .divider{height:1px; background:#ead9bd; margin:12px 0 16px}
+
+    /* 3D turn animation on next */
+    .turn{animation:turn 900ms cubic-bezier(.22,.61,.36,1)}
+    @keyframes turn{
+      0%{transform:rotateY(0deg)}
+      45%{transform:rotateY(-140deg)}
+      100%{transform:rotateY(-180deg)}
+    }
+
+    /* Start screen layout */
+    .start-grid{
+      display:grid; grid-template-columns: 1.3fr .9fr; gap:16px;
+    }
+    .start-left, .start-right{
+      background:linear-gradient(135deg, #fffefb, #fff2db);
+      border:1px solid #ecd7b4; border-radius:18px; padding:18px; position:relative; overflow:hidden;
+    }
+    .start-left::after, .start-right::after{
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background:radial-gradient(700px 360px at 18% 12%, #ffffffaa 0%, transparent 62%);
+    }
+
+    .menu{
+      display:grid; grid-template-columns:repeat(2, minmax(220px, 1fr)); gap:12px;
+    }
+    .menu-btn{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      background:linear-gradient(135deg, #fefefe, #fff3d9); color:#2a2b33;
+      border:1px solid #ecd7b4; border-radius:16px; padding:14px; cursor:pointer;
+      transition:.22s transform, .22s box-shadow, .22s filter;
+    }
+    .menu-btn:hover{transform:translateY(-3px); box-shadow:0 12px 26px rgba(0,0,0,.18); filter:saturate(1.15)}
+    .menu-icon{width:34px; height:34px; border-radius:12px; background:linear-gradient(135deg, #e8f3ff, #d7f9f1); box-shadow:inset 0 0 0 1px #c7d6e9}
+
+    /* Designer card */
+    .designer{
+      display:grid; grid-template-columns: 98px 1fr; gap:12px; align-items:center;
+      background:linear-gradient(135deg, #fffefb, #fff1d6);
+      border:1px solid #ecd7b4; border-radius:16px; padding:12px;
+    }
+    .photo{
+      width:98px; height:98px; border-radius:16px; background:
+        radial-gradient(80px 80px at 30% 30%, #ffe7b8 0%, #ffd166 50%, #ffb703 100%);
+      box-shadow:0 0 0 4px #fff, 0 10px 24px rgba(0,0,0,.18);
+      position:relative; overflow:hidden;
+    }
+    .photo::after{content:"Your Photo"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#2b1700; font-weight:800}
+    .designer h3{margin:0; font-weight:800}
+    .badge{
+      display:inline-block; padding:6px 10px; border-radius:999px; font-weight:700;
+      color:#051a14; background:linear-gradient(135deg, var(--accent2), #00c48a);
+      border:1px solid #0ac89d33; box-shadow:0 4px 12px #00c48a55
+    }
+    .credit{display:flex; gap:12px; flex-wrap:wrap}
+    .credit span{
+      background:#fffaf1; border:1px dashed #e3c895; border-radius:999px; padding:6px 10px; color:#6b5b3e; font-weight:700
+    }
+
+    /* Vocab pills & cards */
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      background:linear-gradient(135deg, #e7f9f3, #c9f7ea);
+      color:#0e3c2f; border-radius:999px; padding:6px 10px; font-weight:700; border:1px solid #aee9d7; cursor:pointer;
+    }
+    .vocab-grid{display:grid; grid-template-columns:repeat(2, 1fr); gap:12px}
+    .vocab-card{
+      background:linear-gradient(135deg, #fefefe, #fff3d9);
+      border:1px solid #ecd7b4; border-radius:16px; padding:12px;
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      transition:.22s transform, .22s box-shadow;
+    }
+    .vocab-card:hover{transform:translateY(-3px); box-shadow:0 12px 26px rgba(0,0,0,.18)}
+    .word{font-weight:800; font-size:1.06rem; color:#2a2b33}
+
+    /* Dialog lines */
+    .dialog{display:grid; gap:8px}
+    .line{background:#fffdf7; border:1px solid #ecd7b4; border-radius:12px; padding:10px}
+    .tag{font-weight:800; color:#6b5b3e; margin-right:6px}
+
+    /* Activity blocks */
+    .block{
+      background:#fffdf7; border:1px solid #ecd7b4; border-radius:16px; padding:12px; margin:10px 0
+    }
+    .block h4{margin:0 0 6px; font-size:1.05rem}
+    .q{margin:6px 0}
+
+    /* Tooltip panel for word details */
+    .tooltip{
+      position:fixed; left:50%; top:50%; transform:translate(-50%, -50%) scale(.98);
+      width:min(560px, 92vw); background:#0f1324; color:#eaf1ff; border:1px solid #2b3258;
+      border-radius:18px; box-shadow:0 20px 60px rgba(0,0,0,.6); padding:18px; display:none; z-index:9999;
+    }
+    .tooltip.show{display:block; animation:pop .22s ease-out}
+    @keyframes pop{from{opacity:0; transform:translate(-50%, -48%) scale(.9)} to{opacity:1; transform:translate(-50%, -50%) scale(1)}}
+    .tip-head{display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .tip-title{font-size:1.25rem; font-weight:800}
+    .tip-close{border:none; background:#212641; color:#cbd3ff; border-radius:10px; padding:8px 10px; cursor:pointer}
+    .tip-body{margin-top:10px; display:grid; gap:10px}
+    .tip-row{display:flex; align-items:center; gap:8px}
+    .tip-label{min-width:120px; font-weight:800; opacity:.9}
+    .tip-value{flex:1; background:#0c0f1f; border:1px dashed #35406f; border-radius:10px; padding:8px 10px}
+    .tip-actions{display:flex; gap:10px; margin-top:12px}
+    .tip-btn{border:none; border-radius:12px; padding:10px 12px; cursor:pointer; font-weight:800}
+    .tip-btn.play{background:linear-gradient(135deg, var(--accent2), #00c48a); color:#051a14}
+    .tip-btn.copy{background:linear-gradient(135deg, var(--accent), #5a3cff); color:#f6f3ff}
+
+    /* Toast */
+    .toast{
+      position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+      background:#0f1324; color:#eaf1ff; border:1px solid #2b3258; border-radius:12px;
+      padding:10px 14px; display:none; z-index:9999;
+    }
+    .toast.show{display:block; animation:fade 2.2s ease-in-out}
+    @keyframes fade{0%{opacity:0; transform:translate(-50%, 20px)} 10%{opacity:1; transform:translate(-50%, 0)} 90%{opacity:1} 100%{opacity:0}}
+
+    /* Pager dots */
+    .pager{display:flex; justify-content:center; gap:10px; margin-top:14px}
+    .dot{width:12px; height:12px; border-radius:50%; background:#3a426b; cursor:pointer; transition:.2s}
+    .dot.active{background:linear-gradient(135deg, var(--accent), var(--gold)); box-shadow:0 0 16px #7c5cff88}
+
+    /* Floating particles (bg) */
+    .particle{
+      position:fixed; width:8px; height:8px; background:radial-gradient(#fff, transparent);
+      border-radius:50%; filter:blur(.6px); opacity:.75; pointer-events:none;
+      animation:float 10s linear infinite; z-index:0;
+    }
+    @keyframes float{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-26px)}
+      100%{transform:translateY(0)}
+    }
+
+    /* Mobile tweaks */
+    @media (max-width: 900px){
+      .start-grid{grid-template-columns:1fr}
+      .menu{grid-template-columns:1fr}
+      .flipbook{height:auto}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <div class="header">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="title">
+          <h1>Lesson 1: Personality</h1>
+          <p class="subtitle">Interactive flipbook • Tap words to see Persian meaning, synonym, definition, and hear pronunciation</p>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn accent" id="prevBtn">Prev ⟵</button>
+        <button class="btn accent" id="nextBtn">Next ⟶</button>
+        <button class="btn green" id="musicBtn">Music: Off</button>
+        <button class="btn gold" id="confettiBtn">Celebrate 🎉</button>
+        <button class="btn outline" id="helpBtn">Help</button>
+      </div>
+    </div>
+
+    <!-- Flipbook -->
+    <div class="flipbook-wrap">
+      <div class="flipbook" id="flipbook">
+
+        <!-- Page 0: Start screen with menu & designer card -->
+        <section class="page" data-page="0">
+          <div class="page-inner">
+            <h2>Start screen – Choose a section</h2>
+            <div class="divider"></div>
+            <div class="start-grid">
+              <div class="start-left">
+                <div class="menu">
+                  <button class="menu-btn" data-goto="1">
+                    <div>
+                      <div class="menu-icon"></div>
+                      <div style="font-weight:800; margin-top:6px">Conversation</div>
+                      <small>گفتگو و کلیک روی کلمات</small>
+                    </div>
+                    <span class="pill">Open</span>
+                  </button>
+                  <button class="menu-btn" data-goto="2">
+                    <div>
+                      <div class="menu-icon"></div>
+                      <div style="font-weight:800; margin-top:6px">Practice 1</div>
+                      <small>Yes/No پرسش‌های شخصیت</small>
+                    </div>
+                    <span class="pill">Open</span>
+                  </button>
+                  <button class="menu-btn" data-goto="3">
+                    <div>
+                      <div class="menu-icon"></div>
+                      <div style="font-weight:800; margin-top:6px">Practice 2</div>
+                      <small>What’s … like?</small>
+                    </div>
+                    <span class="pill">Open</span>
+                  </button>
+                  <button class="menu-btn" data-goto="4">
+                    <div>
+                      <div class="menu-icon"></div>
+                      <div style="font-weight:800; margin-top:6px">Vocabulary A</div>
+                      <small>brave, angry, careless, …</small>
+                    </div>
+                    <span class="pill">Open</span>
+                  </button>
+                  <button class="menu-btn" data-goto="5">
+                    <div>
+                      <div class="menu-icon"></div>
+                      <div style="font-weight:800; margin-top:6px">Vocabulary B</div>
+                      <small>quiet, nervous, funny, …</small>
+                    </div>
+                    <span class="pill">Open</span>
+                  </button>
+                  <button class="menu-btn" data-goto="6">
+                    <div>
+                      <div class="menu-icon"></div>
+                      <div style="font-weight:800; margin-top:6px">Language melody</div>
+                      <small>آهنگ جمله‌ها + تمرین تلفظ</small>
+                    </div>
+                    <span class="pill">Open</span>
+                  </button>
+                  <button class="menu-btn" data-goto="7">
+                    <div>
+                      <div class="menu-icon"></div>
+                      <div style="font-weight:800; margin-top:6px">Grammar – To be</div>
+                      <small>Affirmative / Question / Negative</small>
+                    </div>
+                    <span class="pill">Open</span>
+                  </button>
+                  <button class="menu-btn" data-goto="8">
+                    <div>
+                      <div class="menu-icon"></div>
+                      <div style="font-weight:800; margin-top:6px">Activities</div>
+                      <small>Find it • Tell classmates • Q&A</small>
+                    </div>
+                    <span class="pill">Open</span>
+                  </button>
+                </div>
+                <div class="block" style="margin-top:14px">
+                  <h4>راهنما</h4>
+                  <p>از منوی بالا بخش‌ها را باز کنید. روی کلمات هایلایت‌شده کلیک کنید تا معنی فارسی، مترادف، تعریف ساده، و تلفظ را ببینید/بشنوید. از دکمه‌های بالا برای موسیقی، جشن، و کمک استفاده کنید.</p>
+                </div>
+              </div>
+
+              <div class="start-right">
+                <div class="designer">
+                  <div class="photo" id="designerPhoto" title="Designer photo"></div>
+                  <div>
+                    <h3>Designer card</h3>
+                    <div class="credit">
+                      <span>Designer: Abdol-Rasoul</span>
+                      <span>Location: Kashmar, Iran</span>
+                      <span>Lesson: 1 • Personality</span>
+                    </div>
+                    <p style="margin:8px 0 10px">UI با گرادیان‌های نرم، افکت‌های شاد و تعاملات آموزشی برای لذت یادگیری.</p>
+                    <span class="badge">Creative • Helpful • Neat</span>
+                  </div>
+                </div>
+                <div class="block" style="margin-top:12px">
+                  <h4>کادر عکس و مشخصات</h4>
+                  <p>برای افزودن عکس خودتان، روی کادر کلیک کنید و یک تصویر را رها کنید (Drag & Drop) یا از طریق پنجره انتخاب فایل اضافه کنید.</p>
+                  <button class="btn outline" id="uploadPhotoBtn">Upload photo</button>
+                  <input type="file" id="photoInput" accept="image/*" style="display:none">
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Page 1: Conversation -->
+        <section class="page" data-page="1">
+          <div class="page-inner">
+            <h2>Conversation</h2>
+            <div class="divider"></div>
+            <div class="dialog">
+              <div class="line"><span class="tag">Ehsan:</span> Who is your best friend at school?</div>
+              <div class="line"><span class="tag">Parham:</span> Reza.</div>
+              <div class="line"><span class="tag">Ehsan:</span> What's he like?</div>
+              <div class="line"><span class="tag">Parham:</span> Oh, he is really great! He's <button class="pill vocab" data-word="clever">clever</button> and <button class="pill vocab" data-word="kind">kind</button>.</div>
+              <div class="line"><span class="tag">Ehsan:</span> Is he <button class="pill vocab" data-word="hard-working">hard-working</button> too?</div>
+              <div class="line"><span class="tag">Parham:</span> Yes! And he's always very <button class="pill vocab" data-word="helpful">helpful</button>.</div>
+              <div class="line"><span class="tag">Ehsan:</span> How?</div>
+              <div class="line"><span class="tag">Parham:</span> He always helps me with my lessons.</div>
+            </div>
+            <div class="block">
+              <h4>راهنما</h4>
+              <p>روی واژه‌های رنگی کلیک کنید. پنل معنی فارسی، مترادف، تعریف ساده و دکمه تلفظ باز می‌شود.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Page 2: Practice 1 -->
+        <section class="page" data-page="2">
+          <div class="page-inner">
+            <h2>Practice 1 – Talking about personality (Yes/No)</h2>
+            <div class="divider"></div>
+            <div class="block">
+              <div class="q">Are you <button class="pill vocab" data-word="hard-working">hard-working</button>? → <strong>Yes, I am.</strong></div>
+              <div class="q">Is he <button class="pill vocab" data-word="clever">clever</button>? → <strong>Yes, he is.</strong></div>
+              <div class="q">Is Zahra <button class="pill vocab" data-word="talkative">talkative</button>? → <strong>No, she isn’t.</strong></div>
+              <div class="q">Are they <button class="pill vocab" data-word="neat">neat</button>? → <strong>Yes, they are.</strong></div>
+              <div class="q">Are they <button class="pill vocab" data-word="upset">upset</button>? → <strong>No, they’re not.</strong></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Page 3: Practice 2 -->
+        <section class="page" data-page="3">
+          <div class="page-inner">
+            <h2>Practice 2 – What’s … like?</h2>
+            <div class="divider"></div>
+            <div class="block">
+              <div class="q">What’s your friend like? → He’s very <button class="pill vocab" data-word="funny">funny</button>.</div>
+              <div class="q">What’s your mother like? → She’s very <button class="pill vocab" data-word="kind">kind</button> and <button class="pill vocab" data-word="patient">patient</button>.</div>
+              <div class="q">What’s he like? → He is <button class="pill vocab" data-word="quiet">quiet</button>.</div>
+              <div class="q">What’s she like? → She is <button class="pill vocab" data-word="clever">clever</button>.</div>
+              <div class="q">What are you like? → I’m a bit <button class="pill vocab" data-word="serious">serious</button>.</div>
+              <div class="q">What are they like? → They are very <button class="pill vocab" data-word="kind">kind</button>.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Page 4: Vocabulary A -->
+        <section class="page" data-page="4">
+          <div class="page-inner">
+            <h2>Vocabulary – Set A</h2>
+            <div class="divider"></div>
+            <div class="vocab-grid">
+              <div class="vocab-card"><span class="word">brave</span><button class="pill vocab" data-word="brave">Meaning</button></div>
+              <div class="vocab-card"><span class="word">angry</span><button class="pill vocab" data-word="angry">Meaning</button></div>
+              <div class="vocab-card"><span class="word">careless</span><button class="pill vocab" data-word="careless">Meaning</button></div>
+              <div class="vocab-card"><span class="word">cruel</span><button class="pill vocab" data-word="cruel">Meaning</button></div>
+              <div class="vocab-card"><span class="word">rude</span><button class="pill vocab" data-word="rude">Meaning</button></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Page 5: Vocabulary B -->
+        <section class="page" data-page="5">
+          <div class="page-inner">
+            <h2>Vocabulary – Set B</h2>
+            <div class="divider"></div>
+            <div class="vocab-grid">
+              <div class="vocab-card"><span class="word">quiet</span><button class="pill vocab" data-word="quiet">Meaning</button></div>
+              <div class="vocab-card"><span class="word">nervous</span><button class="pill vocab" data-word="nervous">Meaning</button></div>
+              <div class="vocab-card"><span class="word">funny</span><button class="pill vocab" data-word="funny">Meaning</button></div>
+              <div class="vocab-card"><span class="word">selfish</span><button class="pill vocab" data-word="selfish">Meaning</button></div>
+              <div class="vocab-card"><span class="word">neat</span><button class="pill vocab" data-word="neat">Meaning</button></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Page 6: Language Melody -->
+        <section class="page" data-page="6">
+          <div class="page-inner">
+            <h2>Language melody – آهنگ جمله</h2>
+            <div class="divider"></div>
+            <div class="block">
+              <h4>نمونه‌ها (برای تمرین آهنگ و تلفظ):</h4>
+              <div class="q">1. He’s very <button class="pill vocab" data-word="kind">kind</button>.</div>
+              <div class="q">2. She’s very <button class="pill vocab" data-word="patient">patient</button>.</div>
+              <div class="q">3. You are very <button class="pill vocab" data-word="clever">clever</button>.</div>
+              <div class="q">4. Everybody likes her.</div>
+              <div class="q">5. I do my homework.</div>
+              <div class="q">6. She works for a company.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Page 7: Grammar -->
+        <section class="page" data-page="7">
+          <div class="page-inner">
+            <h2>Grammar – To be</h2>
+            <div class="divider"></div>
+            <div class="block">
+              <h4>Affirmative</h4>
+              <ul>
+                <li>I am happy.</li>
+                <li>He/She is happy.</li>
+                <li>We/You/They are happy.</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h4>Question</h4>
+              <ul>
+                <li>Am I …?</li>
+                <li>Is he/she …?</li>
+                <li>Are we/you/they …?</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h4>Negative</h4>
+              <ul>
+                <li>I am not talkative.</li>
+                <li>He is not shy.</li>
+                <li>They are not rude.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Page 8: Activities -->
+        <section class="page" data-page="8">
+          <div class="page-inner">
+            <h2>Activities – تمرین‌ها</h2>
+            <div class="divider"></div>
+
+            <div class="block">
+              <h4>Find it</h4>
+              <p><em>I’m Mohsen. This is my classroom. There are 25 students in my class. I have a lot of friends. My best friend is Vahid. He’s a good student. He is helpful and hard-working, but he is not very careful. He usually forgets important things. It’s a big problem.</em></p>
+              <p>→ افعال to be را پیدا و خط بکشید.</p>
+            </div>
+
+            <div class="block">
+              <h4>Tell your classmates</h4>
+              <p>Example: My sister is really <button class="pill vocab" data-word="kind">kind</button>.</p>
+              <ol>
+                <li>…</li>
+                <li>…</li>
+                <li>…</li>
+                <li>…</li>
+                <li>…</li>
+              </ol>
+            </div>
+
+            <div class="block">
+              <h4>Listening • Reading • Writing</h4>
+              <p>1. What’s Iran like? → Iran is a … country.</p>
+              <p>2. What are Iranian people like? → Iranian people are … and …</p>
+            </div>
+
+            <div class="block">
+              <h4>Role play</h4>
+              <p>درباره شخصیت دوستان/همکلاسی‌ها/معلمان/اقوام گفتگو کنید و کلمات مناسب را به‌کار ببرید.</p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+      <div class="pager" id="pager"></div>
+    </div>
+  </div>
+
+  <!-- Tooltip (Word details) -->
+  <div class="tooltip" id="tooltip" role="dialog" aria-modal="true" aria-label="Word details panel">
+    <div class="tip-head">
+      <div class="tip-title" id="tipWord">Word</div>
+      <button class="tip-close" id="tipClose">✕ Close</button>
+    </div>
+    <div class="tip-body">
+      <div class="tip-row">
+        <div class="tip-label">Persian:</div>
+        <div class="tip-value" id="tipFa">—</div>
+      </div>
+      <div class="tip-row">
+        <div class="tip-label">Synonym:</div>
+        <div class="tip-value" id="tipSyn">—</div>
+      </div>
+      <div class="tip-row">
+        <div class="tip-label">Definition:</div>
+        <div class="tip-value" id="tipDef">—</div>
+      </div>
+    </div>
+    <div class="tip-actions">
+      <button class="tip-btn play" id="tipSpeak">🔊 Pronounce</button>
+      <button class="tip-btn copy" id="tipCopy">📋 Copy</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">Copied!</div>
+
+  <script>
+    /* Vocabulary data */
+    const data = {
+      "clever": { fa:"باهوش", syn:"smart", def:"able to learn and understand things quickly" },
+      "kind": { fa:"مهربان", syn:"benevolent", def:"friendly and helpful towards others" },
+      "hard-working": { fa:"پرتلاش", syn:"diligent", def:"working with effort for a long time" },
+      "helpful": { fa:"کمک‌کننده", syn:"supportive", def:"giving help or making it easier for others" },
+
+      "brave": { fa:"شجاع", syn:"courageous", def:"willing to face danger or pain" },
+      "angry": { fa:"عصبانی", syn:"mad", def:"feeling strong dislike or annoyance" },
+      "careless": { fa:"بی‌دقت", syn:"negligent", def:"not giving enough attention to what you do" },
+      "cruel": { fa:"بی‌رحم", syn:"brutal", def:"causing pain or suffering deliberately" },
+      "rude": { fa:"بی‌ادب", syn:"impolite", def:"not showing respect to others" },
+
+      "quiet": { fa:"آرام", syn:"silent", def:"making little or no noise" },
+      "nervous": { fa:"مضطرب", syn:"anxious", def:"worried and unable to relax" },
+      "funny": { fa:"خنده‌دار", syn:"humorous", def:"causing laughter; amusing" },
+      "selfish": { fa:"خودخواه", syn:"self-centered", def:"thinking only about yourself" },
+      "neat": { fa:"مرتب", syn:"tidy", def:"clean and well arranged" },
+
+      "patient": { fa:"صبور", syn:"calm", def:"able to wait or accept delays without getting angry" },
+      "talkative": { fa:"پر‌حرف", syn:"chatty", def:"liking to talk a lot" },
+      "upset": { fa:"ناراحت", syn:"sad", def:"feeling unhappy or worried" },
+      "serious": { fa:"جدی", syn:"earnest", def:"not joking; showing deep thought"}
+    };
+
+    /* Flipbook logic */
+    const pages = Array.from(document.querySelectorAll('.page'));
+    const pager = document.getElementById('pager');
+    let current = 0;
+
+    function renderPager(){
+      pager.innerHTML = '';
+      pages.forEach((_,i)=>{
+        const d = document.createElement('div');
+        d.className = 'dot' + (i===current ? ' active':'');
+        d.addEventListener('click', ()=>goTo(i));
+        pager.appendChild(d);
+      });
+    }
+
+    function goTo(index, withTurn = true){
+      if(index<0||index>=pages.length) return;
+      const forward = index > current;
+      const old = pages[current];
+      const next = pages[index];
+      old.style.display='none';
+      if(forward && withTurn){
+        next.classList.add('turn');
+        setTimeout(()=>next.classList.remove('turn'), 900);
+      }
+      next.style.display='block';
+      current=index;
+      renderPager();
+      gentleGlow();
+    }
+
+    function update(){
+      pages.forEach((p,i)=>{ p.style.display = (i===current) ? 'block' : 'none'; });
+      renderPager();
+    }
+    update();
+
+    /* Controls */
+    document.getElementById('prevBtn').addEventListener('click', ()=>goTo(current-1, false));
+    document.getElementById('nextBtn').addEventListener('click', ()=>goTo(current+1, true));
+
+    /* Menu routing from start screen */
+    document.querySelectorAll('.menu-btn').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const target = Number(b.dataset.goto||0);
+        goTo(target);
+        confetti();
+      });
+    });
+
+    /* Music (ambient pad) */
+    let musicOn = false, ctx, osc, gain;
+    function toggleMusic(){
+      if(!musicOn){
+        try{
+          ctx = new (window.AudioContext || window.webkitAudioContext)();
+          osc = ctx.createOscillator();
+          gain = ctx.createGain();
+          const lfo = ctx.createOscillator();
+          const lfoGain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(220, ctx.currentTime);
+          lfo.frequency.value = 0.08;
+          lfoGain.gain.value = 80;
+          lfo.connect(lfoGain);
+          lfoGain.connect(osc.frequency);
+          lfo.start();
+          gain.gain.value = 0.05;
+          osc.connect(gain).connect(ctx.destination);
+          osc.start();
+          musicOn = true;
+        }catch(e){ /* ignore */ }
+      }else{
+        try{ osc.stop(); }catch(e){}
+        musicOn = false;
+      }
+      document.getElementById('musicBtn').textContent = 'Music: ' + (musicOn?'On':'Off');
+    }
+    document.getElementById('musicBtn').addEventListener('click', toggleMusic);
+
+    /* Tooltip interactions */
+    const tooltip = document.getElementById('tooltip');
+    const tipWord = document.getElementById('tipWord');
+    const tipFa = document.getElementById('tipFa');
+    const tipSyn = document.getElementById('tipSyn');
+    const tipDef = document.getElementById('tipDef');
+    const tipClose = document.getElementById('tipClose');
+    const tipSpeak = document.getElementById('tipSpeak');
+    const tipCopy = document.getElementById('tipCopy');
+    let currentWord = null;
+
+    function openTip(word){
+      const item = data[word];
+      if(!item) return;
+      currentWord = word;
+      tipWord.textContent = word;
+      tipFa.textContent = item.fa;
+      tipSyn.textContent = item.syn;
+      tipDef.textContent = item.def;
+      tooltip.classList.add('show');
+      pulseWord(word);
+    }
+    function closeTip(){ tooltip.classList.remove('show'); }
+    tipClose.addEventListener('click', closeTip);
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeTip(); });
+
+    /* Speak using SpeechSynthesis */
+    function speak(word){
+      const utter = new SpeechSynthesisUtterance(word);
+      utter.lang = 'en-US';
+      utter.rate = 0.95;
+      speechSynthesis.speak(utter);
+    }
+    tipSpeak.addEventListener('click', ()=>{ if(currentWord) speak(currentWord); });
+
+    /* Copy details */
+    const toast = document.getElementById('toast');
+    function showToast(msg='Copied!'){
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(()=>toast.classList.remove('show'), 2200);
+    }
+    tipCopy.addEventListener('click', ()=>{
+      if(!currentWord) return;
+      const i = data[currentWord];
+      const text = `${currentWord} — ${i.fa} | Syn: ${i.syn} | Def: ${i.def}`;
+      navigator.clipboard.writeText(text).then(()=>showToast('Copied!'));
+    });
+
+    /* Attach vocab buttons */
+    function attachVocab(){
+      document.querySelectorAll('.vocab').forEach(el=>{
+        el.addEventListener('click', ()=>{
+          const word = el.dataset.word;
+          openTip(word);
+        });
+      });
+    }
+    attachVocab();
+
+    /* Confetti effect */
+    document.getElementById('confettiBtn').addEventListener('click', ()=>confetti());
+    function confetti(){
+      const colors = ['#7c5cff','#00e6a7','#ffd166','#ff5c7a','#8ef6ff'];
+      for(let i=0;i<80;i++){
+        const s = document.createElement('span');
+        s.style.position='fixed';
+        s.style.left = Math.random()*100+'vw';
+        s.style.top = '-10px';
+        s.style.width = s.style.height = (6+Math.random()*6)+'px';
+        s.style.background = colors[Math.floor(Math.random()*colors.length)];
+        s.style.borderRadius = Math.random()>0.5 ? '2px' : '50%';
+        s.style.transform = `rotate(${Math.random()*360}deg)`;
+        s.style.boxShadow='0 0 8px rgba(0,0,0,.3)';
+        s.style.zIndex='9999';
+        document.body.appendChild(s);
+        const duration = 1200 + Math.random()*1600;
+        s.animate([
+          { transform: s.style.transform, top:'-10px', opacity:1 },
+          { transform: 'translateX('+((Math.random()*2-1)*80)+'px) rotate('+(Math.random()*360)+'deg)', top:(100+Math.random()*100)+'vh', opacity:0.9 }
+        ], { duration, easing:'cubic-bezier(.2,.7,.2,1)', fill:'forwards' });
+        setTimeout(()=>s.remove(), duration+120);
+      }
+    }
+
+    /* Word pulse */
+    function pulseWord(word){
+      const el = document.querySelector(`[data-word="${CSS.escape(word)}"]`);
+      if(!el) return;
+      el.animate([
+        { boxShadow:'0 0 0px 0px rgba(124,92,255,0.0)' },
+        { boxShadow:'0 0 14px 6px rgba(124,92,255,0.7)' },
+        { boxShadow:'0 0 0px 0px rgba(124,92,255,0.0)' },
+      ], { duration:820, easing:'ease-in-out' });
+    }
+
+    /* Gentle header glow on page change */
+    function gentleGlow(){
+      const h = document.querySelector('.logo');
+      h.animate([
+        { boxShadow:'0 0 22px #7c5cff88' },
+        { boxShadow:'0 0 40px #7c5cffcc' },
+        { boxShadow:'0 0 22px #7c5cff88' },
+      ], { duration:1200, easing:'ease-in-out' });
+    }
+
+    /* Floating particles */
+    for(let i=0;i<24;i++){
+      const p = document.createElement('div');
+      p.className='particle';
+      p.style.left = Math.random()*100+'vw';
+      p.style.top = Math.random()*100+'vh';
+      p.style.animationDuration = (8+Math.random()*9)+'s';
+      document.body.appendChild(p);
+    }
+
+    /* Help modal quick fill */
+    document.getElementById('helpBtn').addEventListener('click', ()=>{
+      tipWord.textContent = 'راهنما';
+      tipFa.textContent = 'روی کلمات کلیک کنید تا معنی فارسی، مترادف و تعریف ساده نمایش داده شود.';
+      tipSyn.textContent = 'برای تلفظ دکمه 🔊 را بزنید. موسیقی را از بالا روشن/خاموش کنید.';
+      tipDef.textContent = 'با Prev/Next یا منوی صفحه نخست بین بخش‌ها جابه‌جا شوید. دکمه Celebrate افکت شادی می‌سازد.';
+      tooltip.classList.add('show');
+    });
+
+    /* Designer photo upload & drag-drop */
+    const photoBox = document.getElementById('designerPhoto');
+    const uploadBtn = document.getElementById('uploadPhotoBtn');
+    const photoInput = document.getElementById('photoInput');
+
+    uploadBtn.addEventListener('click', ()=>photoInput.click());
+    photoInput.addEventListener('change', handlePhotoFile);
+
+    function handlePhotoFile(e){
+      const file = e.target.files?.[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = ()=>{
+        photoBox.style.background = `center/cover no-repeat url('${reader.result}')`;
+        photoBox.style.boxShadow='0 0 0 4px #fff, 0 10px 24px rgba(0,0,0,.18)';
+        photoBox.innerHTML='';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    photoBox.addEventListener('dragover', (e)=>{ e.preventDefault(); photoBox.style.outline='3px dashed #ffb703'; });
+    photoBox.addEventListener('dragleave', ()=>{ photoBox.style.outline='none'; });
+    photoBox.addEventListener('drop', (e)=>{
+      e.preventDefault();
+      photoBox.style.outline='none';
+      const file = e.dataTransfer.files?.[0];
+      if(file) {
+        const reader = new FileReader();
+        reader.onload = ()=>{ photoBox.style.background = `center/cover no-repeat url('${reader.result}')`; photoBox.innerHTML=''; };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    /* Keyboard navigation (Left/Right) */
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='ArrowRight') goTo(current+1, true);
+      if(e.key==='ArrowLeft') goTo(current-1, false);
+    });
+  </script>
+</body>
+</html>
