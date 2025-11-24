@@ -1,57 +1,1070 @@
-<div class="listening-card">
-  <h2>🎧 Lesson 1 – Listening Part A</h2>
-  <p class="listening-text">
-    Haniyeh: Who is she, Anita?<br/>
-    Anita: She is my mother, Zahra.<br/>
-    Haniyeh: Tell me about her. What is she like?<br/>
-    Anita: Well, she's great. She's very kind and helpful.
-  </p>
-  <button class="listen-btn" onclick="document.getElementById('audio1A').play()">▶ Play Audio</button>
-  <audio id="audio1A" src="https://s34.picofile.com/file/8488257092/6A.mp3.html"></audio>
-</div>
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="utf-8" />
+  <title>Prospect 3 — Interactive Flipbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light">
+  <style>
+    :root{
+      --bg:#0b1220; --card:#121a2d; --accent:#71d7ff; --accent2:#13d38b; --text:#e9f1ff; --muted:#9bb3cc;
+      --glow:0 0 12px rgba(19,211,139,.6), 0 0 24px rgba(19,211,139,.3);
+      --grad1:#1f3663; --grad2:#16274b;
+    }
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;padding:0;background:radial-gradient(1200px 600px at 20% 10%, #0f1830 0%, #0b1220 50%, #091024 100%);
+      color:var(--text);font-family:Inter,system-ui,Segoe UI,Arial;
+    }
+    button{cursor:pointer}
 
-<div class="listening-card">
-  <h2>🎧 Lesson 1 – Listening Part B</h2>
-  <p class="listening-text">
-    Iran is a great country. There are a lot of cities and villages here. Iranian people are very kind and friendly. They are also really brave and hard-working. We all love our beautiful country.
-  </p>
-  <button class="listen-btn" onclick="document.getElementById('audio1B').play()">▶ Play Audio</button>
-  <audio id="audio1B" src="https://s34.picofile.com/file/8488257100/6B.mp3.html"></audio>
-</div>
-.listening-card {
-  background: linear-gradient(135deg, #1e3c72, #2a5298);
-  color: #fff;
-  padding: 20px;
-  border-radius: 16px;
-  margin: 20px 0;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-  font-family: 'Poppins', 'Vazirmatn', sans-serif;
-}
+    .topbar{
+      position:sticky;top:0;z-index:10;height:60px;background:#0b1220cc;backdrop-filter: blur(6px);
+      display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid #203055;
+    }
+    .brand-title{font-weight:700;letter-spacing:.4px}
+    .left-controls,.right-controls{display:flex;gap:8px}
 
-.listening-card h2 {
-  margin-top: 0;
-  font-size: 1.4rem;
-  color: #ffd166;
-}
+    .btn{
+      border:none;padding:10px 14px;border-radius:12px;color:#fff;background:#1c2745;
+      transition:transform .15s, box-shadow .15s, background .2s, filter .2s;
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(0,0,0,.25);filter:brightness(1.06)}
+    .outline-btn{background:transparent;border:1px solid #2f4577}
+    .glow-btn{background:linear-gradient(90deg,#13d38b,#71d7ff);color:#06233a;font-weight:700;box-shadow:var(--glow)}
+    .gradient-btn{background:linear-gradient(120deg,#1d6bff,#13d38b);color:#021427;font-weight:700}
+    .small{padding:6px 10px;border-radius:8px}
 
-.listening-text {
-  line-height: 1.8;
-  font-size: 1rem;
-  margin-bottom: 12px;
-}
+    .start-screen{min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;padding:24px}
+    .start-card{
+      width:min(1100px,95vw);background:linear-gradient(160deg,#10192f 0%, #0d1630 50%, #0b1429 100%);
+      border:1px solid #23365f;box-shadow:0 20px 50px rgba(0,0,0,.35);border-radius:22px;padding:28px;position:relative;overflow:hidden;
+      animation:slideIn .6s ease-out both;
+    }
+    @keyframes slideIn{from{transform:translateY(12px);opacity:.0}to{transform:translateY(0);opacity:1}}
 
-.listen-btn {
-  background: linear-gradient(90deg, #13d38b, #71d7ff);
-  border: none;
-  padding: 10px 16px;
-  border-radius: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  color: #06233a;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
+    .hero{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .hero-title .title{font-size:2.3rem;margin:0 0 8px}
+    .subtitle{color:var(--muted);margin:0 0 12px}
+    .hero-visual{position:relative;width:220px;height:120px}
+    .orb{position:absolute;border-radius:50%;filter:blur(10px);opacity:.65}
+    .orb1{width:90px;height:90px;background:#13d38b;top:8px;left:18px;animation:float1 6s ease-in-out infinite}
+    .orb2{width:70px;height:70px;background:#71d7ff;top:26px;left:110px;animation:float2 7s ease-in-out infinite}
+    .orb3{width:60px;height:60px;background:#eeaaff;top:70px;left:50px;animation:float3 8s ease-in-out infinite}
+    @keyframes float1{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+    @keyframes float2{0%{transform:translateY(0)}50%{transform:translateY(10px)}100%{transform:translateY(0)}}
+    @keyframes float3{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
 
-.listen-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 12px rgba(113,215,255,0.6);
-}
+    .designer-bar{
+      display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px;margin-top:10px;
+      background:linear-gradient(90deg,rgba(19,211,139,.10),rgba(113,215,255,.08));border:1px solid #2a455f;
+      box-shadow:0 0 16px rgba(19,211,139,.15);
+    }
+    .designer-photo{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid #2a455f}
+    .designer-meta .designer-name{font-size:.95rem;color:#9bd6ff}
+    .designer-meta .designer-id{font-size:.9rem;color:#bde8ff}
+    .section-head{margin:18px 0 8px 0;color:#cfe7ff;font-size:1.2rem}
+
+    .lesson-grid,.exam-grid,.tools-grid{display:grid;gap:12px;margin-top:10px}
+    .lesson-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .exam-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .tools-grid{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+    .lesson-btn,.exam-btn{
+      border:none;padding:16px;border-radius:16px;font-weight:700;letter-spacing:.3px;
+      background:linear-gradient(120deg,var(--grad1),var(--grad2));color:#dff3ff;border:1px solid #2f4577;
+      display:flex;align-items:center;justify-content:space-between;transition:transform .15s, box-shadow .15s, background .2s;
+    }
+    .lesson-btn span{font-size:1.1rem}
+    .lesson-btn small{color:#9bb3cc}
+    .lesson-btn:hover,.exam-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.35)}
+    .pulse{animation:pulse 2.5s infinite}
+    .glow{box-shadow:0 0 16px rgba(113,215,255,.25),0 0 32px rgba(19,211,139,.15)}
+    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(113,215,255,.7)}70%{box-shadow:0 0 0 20px rgba(113,215,255,0)}100%{box-shadow:0 0 0 0 rgba(113,215,255,0)}}
+
+    .hidden{display:none}
+
+    .flipbook-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 16px}
+    .nav-btn{font-size:20px;width:44px;height:44px;border-radius:12px}
+    .current-title{font-weight:700;color:#cfe7ff}
+
+    .flipbook{perspective:1500px;position:relative;width:min(1100px,96vw);margin:0 auto}
+    .page{
+      background:linear-gradient(180deg,#111b32,#0d162c);
+      border:1px solid #2d426b;border-radius:16px;width:100%;min-height:68vh;margin:18px 0;padding:18px;
+      box-shadow:0 30px 60px rgba(0,0,0,.35);transform-origin:left center;transition:transform .7s ease, box-shadow .4s ease, opacity .4s ease;
+    }
+    .page h2{margin-top:0;color:#cfe7ff;border-bottom:1px solid #253a65;padding-bottom:6px}
+    .page-turn-enter{transform:rotateY(-180deg);box-shadow:0 20px 40px rgba(19,211,139,.25);opacity:1}
+    .page-turn-leave{transform:rotateY(180deg);opacity:.0}
+
+    .section{margin:12px 0 20px;padding:12px;border:1px dashed #2f4577;border-radius:12px}
+    .section h3{margin:0 0 8px;color:#9bd6ff}
+    .section .text{line-height:1.85;color:#e4f0ff}
+
+    .word{cursor:pointer;border-bottom:1px dashed #2f4577}
+    .word:hover{color:#71d7ff}
+
+    .exercise-item{padding:8px;border-radius:10px;background:#0f1a32;border:1px solid #2a4068;margin-bottom:8px}
+    .exercise-controls{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
+    .answer-key{display:none;margin-top:6px;color:#bde8ff}
+    .answer-key.show{display:block}
+    .correct{outline:2px solid #13d38b}
+    .incorrect{outline:2px solid #ff6e6e}
+
+    .photo-dict-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:10px}
+    .phrase-card{background:#0f1a32;border:1px solid #2a4068;border-radius:12px;padding:12px}
+    .phrase-actions{display:flex;gap:8px;margin-top:8px}
+
+    .designer-footer{margin:24px 16px}
+
+    .modal{
+      position:fixed;inset:0;background:rgba(6,12,24,.6);
+      display:flex;align-items:center;justify-content:center;padding:14px;z-index:100;
+    }
+    .modal-content{
+      width:min(900px,96vw);background:linear-gradient(160deg,#10192f,#0d1630);
+      border:1px solid #20355f;border-radius:18px;padding:16px;box-shadow:0 20px 50px rgba(0,0,0,.35);
+      animation:fadeIn .25s ease-out both;
+    }
+    @keyframes fadeIn{from{opacity:.0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .modal-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .help-list{margin:8px 0 0 0;padding-left:18px}
+    .help-list li{margin:6px 0}
+
+    .popup{position:fixed;bottom:24px;right:24px;z-index:101}
+    .popup-content{
+      width:min(420px,92vw);background:#0f1a32;border:1px solid #2a4068;border-radius:14px;box-shadow:0 12px 36px rgba(0,0,0,.35);
+    }
+    .popup-header{display:flex;align-items:center;justify-content:space-between;padding:10px;border-bottom:1px solid #233a60}
+    #popupWord{font-weight:800;color:#9bd6ff}
+    .popup-body{padding:10px}
+    .popup-body .row{margin:6px 0}
+    .popup-body .label{color:#9bb3cc;font-size:.9rem}
+    .popup-body .value{color:#eaf4ff}
+
+    .exam-content .exam-body{margin-top:10px}
+    .exam-question{padding:10px;border:1px solid #2a4068;border-radius:12px;background:#0f1a32;margin-bottom:10px}
+    .exam-question h4{margin:0 0 6px}
+
+    .verbs-body{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+    .verb-card{background:#0f1a32;border:1px solid #2a4068;border-radius:12px;padding:10px}
+    .verb-head{display:flex;align-items:center;justify-content:space-between}
+    .verb-head .forms{font-weight:700;color:#9bd6ff}
+    .verb-ex{margin-top:6px;color:#eaf4ff}
+
+    .listening-card{
+      background: linear-gradient(135deg,#1e3c72,#2a5298);color:#fff;padding:18px;border-radius:16px;margin:18px 0;
+      box-shadow:0 8px 20px rgba(0,0,0,0.3);font-family:'Poppins','Vazirmatn',sans-serif;position:relative;overflow:hidden;
+    }
+    .listening-card::before{
+      content:"";position:absolute;inset:-40% -40% auto auto;width:240px;height:240px;
+      background:radial-gradient(circle at center, rgba(255,255,255,.15), transparent 60%);transform:rotate(25deg);
+    }
+    .listening-card h2{margin-top:0;font-size:1.25rem;color:#ffd166}
+    .listening-text{line-height:1.85;font-size:1rem;margin-bottom:12px}
+    .listen-btn{
+      background:linear-gradient(90deg,#13d38b,#71d7ff);border:none;padding:10px 16px;border-radius:12px;
+      font-weight:700;cursor:pointer;color:#06233a;transition:transform .2s, box-shadow .2s;
+    }
+    .listen-btn:hover{transform:scale(1.05);box-shadow:0 0 12px rgba(113,215,255,0.6)}
+
+    @media (max-width:600px){
+      .hero{flex-direction:column;align-items:flex-start}
+      .hero-visual{width:100%;height:100px}
+    }
+  </style>
+</head>
+<body>
+
+  <audio id="bgMusic" loop preload="auto">
+    <!-- در صورت نیاز مسیر فایل موسیقی را قرار دهید -->
+    <source src="" type="audio/mpeg" />
+  </audio>
+
+  <header class="topbar" role="banner">
+    <div class="left-controls">
+      <button class="btn glow-btn" id="musicBtn" aria-label="Play/Pause music">♫ موسیقی</button>
+    </div>
+    <div class="brand-title">Prospect 3 — Interactive Flipbook</div>
+    <div class="right-controls">
+      <button class="btn outline-btn" id="helpBtn" aria-label="Help">راهنما</button>
+    </div>
+  </header>
+
+  <section class="start-screen" id="startScreen">
+    <div class="start-card">
+      <div class="hero">
+        <div class="hero-title">
+          <h1 class="title">English for Schools — Prospect 3</h1>
+          <p class="subtitle">Lessons • Practice • Workbook • Audio • Photo Dictionary • Exams</p>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="orb orb1"></div>
+          <div class="orb orb2"></div>
+          <div class="orb orb3"></div>
+        </div>
+      </div>
+
+      <div class="designer-bar">
+        <img class="designer-photo" src="https://s34.picofile.com/file/8488183492/2.png" alt="Designer portrait" />
+        <div class="designer-meta">
+          <div class="designer-name">Designer</div>
+          <div class="designer-id">A.R. Yousefzadeh</div>
+        </div>
+      </div>
+
+      <h2 class="section-head">انتخاب درس</h2>
+      <div class="lesson-grid">
+        <button class="lesson-btn pulse" data-lesson="1"><span>Lesson 1</span><small>Personality</small></button>
+        <button class="lesson-btn pulse" data-lesson="2"><span>Lesson 2</span><small>Travel</small></button>
+        <button class="lesson-btn pulse" data-lesson="3"><span>Lesson 3</span><small>Festivals & Ceremonies</small></button>
+        <button class="lesson-btn pulse" data-lesson="4"><span>Lesson 4</span><small>Services</small></button>
+        <button class="lesson-btn pulse" data-lesson="5"><span>Lesson 5</span><small>Media</small></button>
+        <button class="lesson-btn pulse" data-lesson="6"><span>Lesson 6</span><small>Health & Injuries</small></button>
+      </div>
+
+      <h2 class="section-head">آزمون‌ها</h2>
+      <div class="exam-grid">
+        <button class="exam-btn glow" data-exam="midterm-1-3">Midterm A — Lessons 1–3</button>
+        <button class="exam-btn glow" data-exam="midterm-1-3b">Midterm B — Lessons 1–3</button>
+        <button class="exam-btn glow" data-exam="final-4-6">Final A — Lessons 4–6</button>
+        <button class="exam-btn glow" data-exam="final-4-6b">Final B — Lessons 4–6</button>
+      </div>
+
+      <h2 class="section-head">ابزارها</h2>
+      <div class="tools-grid">
+        <button class="btn gradient-btn" id="irregularVerbsBtn">افعال بی‌قاعده + تلفظ + مثال</button>
+        <button class="btn gradient-btn" id="openVocabTrainerBtn">واژه‌نامه تعاملی (Pronunciation + Examples)</button>
+      </div>
+    </div>
+  </section>
+
+  <main id="flipbookWrapper" class="hidden">
+    <div class="flipbook-nav">
+      <button class="btn nav-btn" id="prevPageBtn" aria-label="Previous page">‹</button>
+      <div class="current-title" id="currentTitle"></div>
+      <button class="btn nav-btn" id="nextPageBtn" aria-label="Next page">›</button>
+    </div>
+    <div class="flipbook" id="flipbook"></div>
+
+    <footer class="designer-footer">
+      <div class="designer-bar">
+        <img class="designer-photo" src="https://s34.picofile.com/file/8488183492/2.png" alt="Designer portrait" />
+        <div class="designer-meta">
+          <div class="designer-name">Designer</div>
+          <div class="designer-id">A.R. Yousefzadeh</div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <div class="modal hidden" id="helpModal" aria-hidden="true" role="dialog" aria-label="Help dialog">
+    <div class="modal-content">
+      <h2>راهنما</h2>
+      <div class="modal-cols">
+        <div>
+          <h3>فارسی</h3>
+          <ul class="help-list">
+            <li><b>انتخاب درس:</b> از صفحه‌ی آغاز درس را انتخاب کنید.</li>
+            <li><b>ورق‌زن:</b> با دکمه‌های ‹ و › بین صفحات حرکت کنید. روی کلمات کلیک کنید تا معنی فارسی، مترادف‌ها، کلمات مرتبط، جمله‌ی نمونه و تلفظ را ببینید.</li>
+            <li><b>شنیداری (A/B):</b> متن در کادر زیبا + دکمه پخش صوت.</li>
+            <li><b>تمرینات کتاب کار:</b> پاسخ را تایپ یا انتخاب کنید و با «نمایش پاسخ» بررسی کنید.</li>
+            <li><b>گرامر:</b> دکمه‌ی نمایش توضیحات قاعده برای مطالعه‌ی سریع.</li>
+            <li><b>Photo Dictionary:</b> تلفظ، معنی و مثال ساده برای عبارت‌ها.</li>
+            <li><b>افعال بی‌قاعده:</b> لیست همراه با تلفظ و مثال انگلیسی/فارسی.</li>
+            <li><b>آزمون‌ها:</b> میان‌ترم و پایان‌ترم تعاملی با نمایش پاسخنامه.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>English</h3>
+          <ul class="help-list">
+            <li><b>Select lessons:</b> Choose a lesson on the start screen.</li>
+            <li><b>Flipbook:</b> Use ‹ and ›; click words for meaning, synonyms, related words, sample sentence, and pronunciation.</li>
+            <li><b>Listening (A/B):</b> Transcript + Play button in styled cards.</li>
+            <li><b>Workbook:</b> Type/select answers; “Show answer”.</li>
+            <li><b>Grammar:</b> Toggle explanation.</li>
+            <li><b>Photo Dictionary:</b> Pronunciation + Persian meaning + examples.</li>
+            <li><b>Irregular Verbs:</b> Styled list with TTS and examples.</li>
+            <li><b>Exams:</b> Interactive with reveal answers.</li>
+          </ul>
+        </div>
+      </div>
+      <button class="btn outline-btn" id="closeHelpBtn">بستن</button>
+    </div>
+  </div>
+
+  <div class="popup hidden" id="wordPopup" role="dialog" aria-hidden="true" aria-label="Word info">
+    <div class="popup-content">
+      <div class="popup-header">
+        <span id="popupWord"></span>
+        <div class="popup-actions">
+          <button class="btn small" id="pronounceBtn">🔊 تلفظ</button>
+          <button class="btn small" id="closePopupBtn">✕</button>
+        </div>
+      </div>
+      <div class="popup-body" id="popupBody"></div>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="examModal" aria-hidden="true" role="dialog" aria-label="Exam">
+    <div class="modal-content exam-content">
+      <div class="exam-header">
+        <h2 id="examTitle"></h2>
+        <button class="btn outline-btn" id="closeExamBtn">بستن</button>
+      </div>
+      <div class="exam-body" id="examBody"></div>
+      <div class="exam-footer">
+        <button class="btn glow-btn" id="submitExamBtn">ثبت پاسخ‌ها</button>
+        <button class="btn outline-btn" id="showExamAnswersBtn">نمایش پاسخنامه</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="verbsModal" aria-hidden="true" role="dialog" aria-label="Irregular verbs">
+    <div class="modal-content verbs-content">
+      <div class="verbs-header">
+        <h2>افعال بی‌قاعده</h2>
+        <button class="btn outline-btn" id="closeVerbsBtn">بستن</button>
+      </div>
+      <div class="verbs-body" id="verbsBody"></div>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="vocabModal" aria-hidden="true" role="dialog" aria-label="Vocab trainer">
+    <div class="modal-content">
+      <h2>واژه‌نامه تعاملی</h2>
+      <div class="vocab-body">
+        <div class="vocab-controls">
+          <input id="vocabSearch" type="text" placeholder="جستجوی واژه انگلیسی..." aria-label="Search English word" />
+          <button class="btn" id="vocabPronounceBtn">🔊 تلفظ</button>
+        </div>
+        <div id="vocabResult" class="vocab-result"></div>
+      </div>
+      <button class="btn outline-btn" id="closeVocabBtn">بستن</button>
+    </div>
+  </div>
+
+  <script>
+    // --- Data: Lessons 1–6 with Listening A/B ---
+    window.LESSONS = [
+      {
+        id: 1, title: "Lesson 1 — Personality",
+        sections: [
+          { type:"conversation", title:"Conversation", text:`
+Ehsan: Who is your best friend at school?
+Parham: Reza.
+Ehsan: What's he like?
+Parham: Oh, he is really great! He's clever and kind.
+Ehsan: Is he hard-working too?
+Parham: Yes! And he's always very helpful.
+Ehsan: How?
+Parham: He always helps me with my lessons.` },
+          { type:"practice", title:"Practice 1 — Talking about personality (1)", items:[
+            { q:"Are you hard-working?", a:"Yes, I am." },
+            { q:"Is he clever?", a:"Yes, he is." },
+            { q:"Is Zahra talkative?", a:"No, she isn't." },
+            { q:"Are they neat?", a:"Yes, they are." },
+            { q:"Are they upset?", a:"No, they're not." }
+          ]},
+          { type:"practice", title:"Practice 2 — Talking about personality (2)", items:[
+            { q:"What's your friend like?", a:"He's very funny." },
+            { q:"What's your mother like?", a:"She's very kind and patient." },
+            { q:"What's he like?", a:"He is quiet." },
+            { q:"What's she like?", a:"She is clever." },
+            { q:"What are you like?", a:"I'm a bit serious." },
+            { q:"What are they like?", a:"They are very kind." }
+          ]},
+          { type:"languageMelody", title:"Language Melody — Affirmative",
+            lines:[
+              "Farzaneh is a clever student. Everybody likes her.",
+              "Yes. I know. She is also very helpful.",
+              "Well, you can ask her for help.",
+              "Ok, I'll ask her to help me with my English."
+            ],
+            practice:[
+              "He's very kind.","She's very patient.","You are very clever.",
+              "Everybody likes her.","I do my homework.","She works for a company."
+            ]
+          },
+          { type:"grammar", title:"Grammar — To be, Questions, There is/are",
+            blocks:[
+              { label:"Affirmative (to be)", text:"I am happy. He/She is happy. We/You/They are happy." },
+              { label:"Questions (to be)", text:"Am I ... ? Is he/she ... ? Are we/you/they ... ?" },
+              { label:"There is/are", text:"There is an eraser in the classroom. There are many students." },
+              { label:"Negative (to be)", text:"I'm not talkative. He's not shy (He isn't shy). They're not rude (They aren't rude)." }
+            ]
+          },
+          { type:"findIt", title:"Find it — underline 'to be' verbs",
+            text:"I'm Mohsen. This is my classroom. There are 25 students in my class. I have a lot of friends. My best friend is Vahid. He's a good student. He is helpful and hard-working, but he is not very careful. He usually forgets important things. It's a big problem."
+          },
+          { type:"listeningCard", title:"Lesson 1 — Listening Part A",
+            audio:"https://s34.picofile.com/file/8488257092/6A.mp3.html",
+            text:`Haniyeh: Who is she, Anita?
+Anita: She is my mother, Zahra.
+Haniyeh: Tell me about her. What is she like?
+Anita: Well, she's great. She's very kind and helpful.` },
+          { type:"listeningCard", title:"Lesson 1 — Listening Part B",
+            audio:"https://s34.picofile.com/file/8488257100/6B.mp3.html",
+            text:`Iran is a great country. There are a lot of cities and villages here. Iranian people are very kind and friendly. They are also really brave and hard- working. We all love our beautiful country.` },
+          { type:"workbook", title:"Workbook — Lesson 1 (نمونه)",
+            items:[
+              { type:"choice", q:"Kate isn't/aren't funny.", correct:"isn't" },
+              { type:"choice", q:"There is/are a car in the street.", correct:"is" },
+              { type:"choice", q:"There is/are fifteen benches in the class.", correct:"are" },
+              { type:"choice", q:"It is/are really beautiful.", correct:"is" },
+              { type:"choice", q:"Iranians is/are very brave.", correct:"are" }
+            ]
+          },
+          { type:"photoDict", title:"Photo Dictionary — Personality (نمونه)",
+            phrases:[
+              { en:"an angry kid", fa:"یک بچه عصبانی", ex:"The angry kid shouted loudly.", tts:true },
+              { en:"a brave soldier", fa:"یک سرباز شجاع", ex:"The brave soldier helped people.", tts:true },
+              { en:"a neat person", fa:"یک فرد مرتب", ex:"He is a neat person.", tts:true }
+            ]
+          }
+        ]
+      },
+      {
+        id: 2, title: "Lesson 2 — Travel",
+        sections: [
+          { type:"conversation", title:"Conversation", text:`
+Receptionist: Welcome to our hotel sir, how can I help you?
+Tourist: My name is Paul Kress. I'm from Germany. I have a reservation here.
+Receptionist: I see! Are you staying here for two nights?
+Tourist: Yes, my wife and I are visiting Tehran for three days.
+Receptionist: Where is she now? I need to check her passport.
+Tourist: She's standing over there, by the gift shop. Here is her passport.
+Receptionist: Thank you. This is your key. It's room 213. Hope you enjoy your stay in Tehran.` },
+          { type:"listeningCard", title:"Lesson 2 — Listening Part A",
+            audio:"https://s34.picofile.com/file/8488257218/026_A.mp3.html",
+            text:`Receptionist: Hello, who is speaking?
+Brenda: Hi, it is Brenda from England.
+Receptionist: How can I help you madam?
+Brenda: I'm checking your website but I can't find the reservation section.
+Receptionist: OK! Let me help you.
+Brenda: Thank you so much.` },
+          { type:"listeningCard", title:"Lesson 2 — Listening Part B",
+            audio:"https://s34.picofile.com/file/8488257226/026_B.mp3.html",
+            text:`Mehmet is a tourist from Turkey. He's visiting Iran. Now, he is buying a ticket to Mashhad. He's talking with the front-desk. He is asking about the ticket price. He wants to stay in Mashhad for two nights.` }
+        ]
+      },
+      {
+        id: 3, title: "Lesson 3 — Festivals & Ceremonies",
+        sections: [
+          { type:"conversation", title:"Conversation", text:`
+Elham: I just love New Year holidays!
+Nasrin: Oh, yes, me too. It's really great.
+Elham: We normally visit our relatives in Norooz. It's fun!
+Nasrin: Do you get New Year gifts too?
+Elham: Sure! We usually get money. I really like it.
+Nasrin: Well ... , We always go to my grandparents' houses.
+Elham: That's nice! Does your grandmother cook the New Year meal?
+Nasrin: Actually, she doesn't. My mother makes it.` },
+          { type:"listeningCard", title:"Lesson 3 — Listening Part A",
+            audio:"https://s34.picofile.com/file/8488257234/036_A.mp3.html",
+            text:`Zohreh: Do you stay home at Yalda Night?
+Ayda: No, we don't. We go to my grandparents' house.
+Zohreh: How nice! What do you do there?
+Ayda: We sit together and listen to poems of Hafez.
+Zohreh: Nice! Do you eat watermelon?
+Ayda: Yes, we do! We also have nuts.
+Zohreh: It sounds great!` },
+          { type:"listeningCard", title:"Lesson 3 — Listening Part B",
+            audio:"https://s34.picofile.com/file/8488257242/036_B.mp3.html",
+            text:`"Hi, I'm from China. In my country New Year starts in January or February. It changes every year! Umm ... Red is very important for Chinese people. People wear red clothes. Oh! And older people give lucky money to children in red envelopes."` }
+        ]
+      },
+      {
+        id: 4, title: "Lesson 4 — Services",
+        sections: [
+          { type:"conversation", title:"Conversation", text:`
+Tourist: Excuse me sir! Can you help me please?
+Pedram: What can I do for you?
+Tourist: I want a postcard, an envelope and a stamp.
+Pedram: Umm ... , you can get them from a post office.
+Tourist: Where is the post office?
+Pedram: Actually it's near here. It's just round the corner.
+Tourist: Good! Thank you. What time does it open?
+Pedram: It opens at 8.
+Tourist: Thanks a lot!` },
+          { type:"listeningCard", title:"Lesson 4 — Listening Part A",
+            audio:"https://s34.picofile.com/file/8488257250/046_A.mp3.html",
+            text:`Interviewer: What do you do?
+Baker: I'm a baker.
+Interviewer: Where do you work?
+Baker: I work in a bakery.
+Interviewer: When does your work start?
+Baker: It starts very early in the morning.
+Interviewer: Is your job difficult?
+Baker: Well, I work in a very hot place.` },
+          { type:"listeningCard", title:"Lesson 4 — Listening Part B",
+            audio:"https://s34.picofile.com/file/8488257268/046_B.mp3.html",
+            text:`Amir is a police officer. He works at a police station. He goes to work Saturdays to Wednesdays, 7 a.m. till 4 p.m. He drives his car around the city and makes sure everything is OK.` }
+        ]
+      },
+      {
+        id: 5, title: "Lesson 5 — Media",
+        sections: [
+          { type:"conversation", title:"Conversation", text:`
+Mina: Did you enjoy your weekend?
+Mahsa: Yes, it was wonderful! I attended Fajr International Film Festival.
+Mina: Really? I am also interested in its events and movies.
+Mahsa: Oh, did you watch the reports on TV last night?
+Mina: Yes, I did, but I like to read about them.
+Mahsa: Well, you can surf its website if you like. There are many interesting things there.
+Mina: That's great! Could you please give me the website address?
+Mahsa: Why not! Just a moment. Umm ... I just texted it.
+Mina: Thanks a lot.` },
+          { type:"listeningCard", title:"Lesson 5 — Listening Part A",
+            audio:"https://s34.picofile.com/file/8488257326/056_A.mp3.html",
+            text:`Amir: How was your summer?
+Behnam: Brilliant! I went to a computer class. I learned many things about Information Technology.
+Amir: Great! Did you learn how to use computers for doing your homework?
+Behnam: Yes, I also learned to use the Internet for my English class.` },
+          { type:"listeningCard", title:"Lesson 5 — Listening Part B",
+            audio:"https://s34.picofile.com/file/8488257350/056_B.mp3.html",
+            text:`This summer, there were 2 interesting movies in the cinemas: a cartoon and a comedy. I liked to see both. But I just watched the cartoon. The cinemas were full of people and it was difficult to buy tickets. Later I watched the CD of the comedy at home.` }
+        ]
+      },
+      {
+        id: 6, title: "Lesson 6 — Health & Injuries",
+        sections: [
+          { type:"conversation", title:"Conversation", text:`
+Reza: We plan to go to the lake. Do you want to come?
+Ehsan: I don't think so. I don't like school trips. Last summer I fell and broke my leg.
+Reza: It sometimes happens. I twisted my ankle last winter. I stayed home for two weeks!
+Ehsan: That's too bad! I didn't know that.
+Reza: Yeah ... , but after that, I participated in Helal-e-Ahmar first aid classes. I learned how to take care of myself.
+Ehsan: I like that. Can you give me some advice?
+Reza: Sure!` },
+          { type:"listeningCard", title:"Lesson 6 — Listening Part A",
+            audio:"https://s34.picofile.com/file/8488257376/066_A.mp3.html",
+            text:`Behnaz: Mother, please help me. I think I just broke my leg.
+Mother: What happened dear?
+Behnaz: I didn't see this ball and I fell down. My leg hurts a lot.
+Mother: Sit down and don't move. Let me call 115.` },
+          { type:"listeningCard", title:"Lesson 6 — Listening Part B",
+            audio:"https://s34.picofile.com/file/8488257400/066_B.mp3.html",
+            text:`Omid is a firefighter. Last week he went to put out a big fire in a small house. There was a child in the fire. The child hurt her ankle and could not come out of the house. Omid went into the fire and saved the child. He hurt his back. He got some bruises on his hands and legs. He is in the hospital now. But he is very happy he saved the child.` }
+        ]
+      }
+    ];
+
+    // --- Dictionary (initial; extend freely) ---
+    window.DICT = {
+      "clever": { fa:"باهوش", syn:["smart","bright","intelligent"], rel:["wise","brainy"], ex:"He is a clever student." },
+      "kind": { fa:"مهربان", syn:["nice","friendly","helpful"], rel:["polite","gentle"], ex:"She is kind to everyone." },
+      "hard-working": { fa:"پرتلاش", syn:["diligent","industrious"], rel:["active","busy"], ex:"They are hard-working people." },
+      "helpful": { fa:"کمک‌کننده", syn:["supportive","useful"], rel:["kind","friendly"], ex:"He is helpful in class." },
+      "funny": { fa:"خنده‌دار", syn:["humorous","amusing"], rel:["happy","jolly"], ex:"It is a funny story." },
+      "quiet": { fa:"آرام", syn:["silent","calm"], rel:["peaceful","still"], ex:"This is a quiet place." }
+    };
+
+    // --- Exams ---
+    window.EXAMS = {
+      "midterm-1-3": {
+        title:"Midterm Exam A — Lessons 1–3",
+        questions:[
+          { type:"mc", q:"Choose the correct 'to be' form: They __ kind.", opts:["is","are","am"], key:"are" },
+          { type:"short", q:"Write a question with 'What's he like?' and answer briefly." },
+          { type:"mc", q:"Present Simple: She __ lunch at noon.", opts:["cook","cooks","is cooking"], key:"cooks" },
+          { type:"match", q:"Match personality words", pairs:[["brave","شجاع"],["neat","مرتب"],["rude","بی‌ادب"],["careless","بی‌دقت"]] },
+          { type:"fill", q:"There __ many tourists in this city. (is/are)", key:"are" },
+          { type:"short", q:"Write a sentence using 'There is/There are' (Festivals or Travel topic)." },
+          { type:"mc", q:"Do/Does: __ you visit your relatives on holidays?", opts:["Do","Does"], key:"Do" },
+          { type:"mc", q:"Which has rising intonation?", opts:["Affirmative sentence","Yes/No question"], key:"Yes/No question" },
+          { type:"short", q:"Write two personality adjectives and describe a classmate." },
+          { type:"mc", q:"Choose: We __ to a museum. (often/never/rarely)", opts:["often","never","rarely"], key:"often" }
+        ]
+      },
+      "midterm-1-3b": {
+        title:"Midterm Exam B — Lessons 1–3",
+        questions:[
+          { type:"mc", q:"Choose: Is/Are: __ they helpful?", opts:["Is","Are"], key:"Are" },
+          { type:"short", q:"Write a 'Find it' sentence and underline 'to be' verbs." },
+          { type:"mc", q:"Present Simple: They __ stories at night.", opts:["tell","tells","are telling"], key:"tell" },
+          { type:"fill", q:"Complete: What's your friend like? — He __ funny.", key:"is" },
+          { type:"mc", q:"Choose: Do/Does __ she get gifts on Norooz?", opts:["Do","Does"], key:"Does" },
+          { type:"short", q:"Write a sentence about a festival activity (use 'we')." },
+          { type:"mc", q:"Choose: Affirmative intonation goes (falling/rising).", opts:["falling","rising"], key:"falling" },
+          { type:"match", q:"Match travel verbs", pairs:[["check in","تحویل اتاق"],["take off","برخاستن"],["land","فرود آمدن"],["exchange money","تعویض پول"]] },
+          { type:"fill", q:"There __ a computer in the classroom. (is/are)", key:"is" },
+          { type:"short", q:"Write two 'Do/Does' questions about travel." }
+        ]
+      },
+      "final-4-6": {
+        title:"Final Exam A — Lessons 4–6",
+        questions:[
+          { type:"mc", q:"WH question: __ do you live?", opts:["Where","What","Who"], key:"Where" },
+          { type:"mc", q:"Adverb of frequency: She __ studies hard.", opts:["never","always","rarely"], key:"always" },
+          { type:"mc", q:"Past Simple: He __ a message yesterday.", opts:["send","sends","sent"], key:"sent" },
+          { type:"fill", q:"Complete: He __ his leg last week. (broke / break)", key:"broke" },
+          { type:"match", q:"Match services", pairs:[["put out fire","آتش را خاموش کردن"],["hire a taxi","گرفتن تاکسی"],["open an account","باز کردن حساب"],["call 115","تماس با اورژانس"]] },
+          { type:"short", q:"Write 2 sentences with 'was/were' (media or services)." },
+          { type:"mc", q:"Choose: Past of 'go' is __.", opts:["went","goed","gone"], key:"went" },
+          { type:"short", q:"Write an injury report sentence with 'hurt'." },
+          { type:"mc", q:"Choose: Past of 'take off' is __.", opts:["taked off","took off","taken off"], key:"took off" },
+          { type:"short", q:"Write a WH question about a service in your city." }
+        ]
+      },
+      "final-4-6b": {
+        title:"Final Exam B — Lessons 4–6",
+        questions:[
+          { type:"mc", q:"WH question: __ does the bank open?", opts:["Where","When","Why"], key:"When" },
+          { type:"mc", q:"Past of 'see' is __.", opts:["saw","seed","seen"], key:"saw" },
+          { type:"fill", q:"Complete: They __ on TV last night. (watched / watch)", key:"watched" },
+          { type:"short", q:"Write 2 sentences using 'always/never' about services." },
+          { type:"mc", q:"Choose: Past of 'break' is __.", opts:["breaked","broke","broken"], key:"broke" },
+          { type:"match", q:"Match health phrases", pairs:[["It is bleeding","خون‌ریزی دارد"],["Stick a plaster","چسب زخم بزن"],["He hit his head","سرش را زد"],["She cut her finger","انگشتش را برید"]] },
+          { type:"short", q:"Write a 'Do/Does' question and answer (media)." },
+          { type:"mc", q:"Choose: Past of 'write' is __.", opts:["writed","wrote","written"], key:"wrote" },
+          { type:"fill", q:"Complete: He __ in the ER. (works / worked) — choose one and justify.", key:"works" },
+          { type:"short", q:"Write a WH question about an accident." }
+        ]
+      }
+    };
+
+    // --- Irregular verbs list ---
+    window.IRREGULAR_VERBS = [
+      { base:"be", past:"was/were", exEn:"I was happy yesterday.", exFa:"من دیروز خوشحال بودم." },
+      { base:"become", past:"became", exEn:"She became a doctor.", exFa:"او دکتر شد." },
+      { base:"bleed", past:"bled", exEn:"It bled a lot.", exFa:"خیلی خون‌ریزی کرد." },
+      { base:"break", past:"broke", exEn:"He broke his leg.", exFa:"او پایش را شکست." },
+      { base:"bring", past:"brought", exEn:"They brought food.", exFa:"آن‌ها غذا آوردند." },
+      { base:"build", past:"built", exEn:"We built a bridge.", exFa:"ما یک پل ساختیم." },
+      { base:"buy", past:"bought", exEn:"She bought a ticket.", exFa:"او بلیط خرید." },
+      { base:"choose", past:"chose", exEn:"He chose the movie.", exFa:"او فیلم را انتخاب کرد." },
+      { base:"come", past:"came", exEn:"They came late.", exFa:"آن‌ها دیر آمدند." },
+      { base:"cut", past:"cut", exEn:"I cut my finger.", exFa:"من انگشتم را بریدم." },
+      { base:"do", past:"did", exEn:"We did our homework.", exFa:"ما تکلیف‌مان را انجام دادیم." },
+      { base:"drink", past:"drank", exEn:"He drank water.", exFa:"او آب نوشید." },
+      { base:"drive", past:"drove", exEn:"She drove to Tehran.", exFa:"او به تهران رانندگی کرد." },
+      { base:"eat", past:"ate", exEn:"They ate lunch.", exFa:"آن‌ها ناهار خوردند." },
+      { base:"fall", past:"fell", exEn:"He fell down.", exFa:"او افتاد." },
+      { base:"feel", past:"felt", exEn:"I felt tired.", exFa:"من احساس خستگی کردم." },
+      { base:"find", past:"found", exEn:"We found the shop.", exFa:"ما مغازه را پیدا کردیم." },
+      { base:"forget", past:"forgot", exEn:"She forgot the keys.", exFa:"او کلیدها را فراموش کرد." },
+      { base:"get", past:"got", exEn:"I got a message.", exFa:"من یک پیام گرفتم." },
+      { base:"give", past:"gave", exEn:"He gave me his book.", exFa:"او کتابش را به من داد." },
+      { base:"go", past:"went", exEn:"They went home.", exFa:"آن‌ها به خانه رفتند." },
+      { base:"have", past:"had", exEn:"We had fun.", exFa:"ما خوش گذراندیم." },
+      { base:"hear", past:"heard", exEn:"I heard the news.", exFa:"من خبر را شنیدم." },
+      { base:"hit", past:"hit", exEn:"He hit his head.", exFa:"او سرش را زد." },
+      { base:"hurt", past:"hurt", exEn:"She hurt her knee.", exFa:"او زانویش را آسیب زد." },
+      { base:"keep", past:"kept", exEn:"We kept the ticket.", exFa:"ما بلیط را نگه داشتیم." },
+      { base:"know", past:"knew", exEn:"He knew the answer.", exFa:"او پاسخ را می‌دانست." },
+      { base:"leave", past:"left", exEn:"She left early.", exFa:"او زود رفت." },
+      { base:"lose", past:"lost", exEn:"They lost the match.", exFa:"آن‌ها مسابقه را باختند." },
+      { base:"make", past:"made", exEn:"He made lunch.", exFa:"او ناهار درست کرد." },
+      { base:"meet", past:"met", exEn:"I met my friend.", exFa:"من دوستم را دیدم." },
+      { base:"pay", past:"paid", exEn:"She paid the bill.", exFa:"او صورتحساب را پرداخت کرد." },
+      { base:"put", past:"put", exEn:"He put it on the table.", exFa:"او آن را روی میز گذاشت." },
+      { base:"read", past:"read (/red)", exEn:"I read a book.", exFa:"من کتابی خواندم." },
+      { base:"ride", past:"rode", exEn:"She rode a bike.", exFa:"او دوچرخه‌سواری کرد." },
+      { base:"run", past:"ran", exEn:"They ran fast.", exFa:"آن‌ها سریع دویدند." },
+      { base:"say", past:"said", exEn:"He said hello.", exFa:"او سلام گفت." },
+      { base:"see", past:"saw", exEn:"We saw a movie.", exFa:"ما فیلمی دیدیم." },
+      { base:"set", past:"set", exEn:"They set the table.", exFa:"آن‌ها میز را چیدند." },
+      { base:"sell", past:"sold", exEn:"He sold his car.", exFa:"او ماشینش را فروخت." },
+      { base:"send", past:"sent", exEn:"She sent an email.", exFa:"او ایمیلی فرستاد." },
+      { base:"sing", past:"sang", exEn:"He sang a song.", exFa:"او یک آهنگ خواند." },
+      { base:"sit", past:"sat", exEn:"We sat down.", exFa:"ما نشستیم." },
+      { base:"sleep", past:"slept", exEn:"They slept well.", exFa:"آن‌ها خوب خوابیدند." },
+      { base:"speak", past:"spoke", exEn:"She spoke English.", exFa:"او انگلیسی صحبت کرد." },
+      { base:"stand", past:"stood", exEn:"I stood up.", exFa:"من ایستادم." },
+      { base:"stick", past:"stuck", exEn:"He stuck a poster.", exFa:"او یک پوستر چسباند." },
+      { base:"swim", past:"swam", exEn:"They swam in the pool.", exFa:"آن‌ها در استخر شنا کردند." },
+      { base:"take", past:"took", exEn:"He took a photo.", exFa:"او یک عکس گرفت." },
+      { base:"take off", past:"took off", exEn:"The plane took off.", exFa:"هواپیما بلند شد." },
+      { base:"teach", past:"taught", exEn:"She taught math.", exFa:"او ریاضی تدریس کرد." },
+      { base:"tell", past:"told", exEn:"He told a story.", exFa:"او داستانی گفت." },
+      { base:"think", past:"thought", exEn:"I thought about it.", exFa:"در موردش فکر کردم." },
+      { base:"understand", past:"understood", exEn:"We understood the lesson.", exFa:"ما درس را فهمیدیم." },
+      { base:"wake", past:"woke", exEn:"He woke up early.", exFa:"او زود بیدار شد." },
+      { base:"wear", past:"wore", exEn:"She wore a dress.", exFa:"او لباس پوشید." },
+      { base:"write", past:"wrote", exEn:"They wrote a letter.", exFa:"آن‌ها نامه‌ای نوشتند." }
+    ];
+
+    // --- App state & elements ---
+    const startScreen = document.getElementById('startScreen');
+    const flipbookWrapper = document.getElementById('flipbookWrapper');
+    const flipbookEl = document.getElementById('flipbook');
+    const currentTitleEl = document.getElementById('currentTitle');
+    const prevPageBtn = document.getElementById('prevPageBtn');
+    const nextPageBtn = document.getElementById('nextPageBtn');
+    const helpBtn = document.getElementById('helpBtn');
+    const helpModal = document.getElementById('helpModal');
+    const closeHelpBtn = document.getElementById('closeHelpBtn');
+    const musicBtn = document.getElementById('musicBtn');
+    const bgMusic = document.getElementById('bgMusic');
+    const irregularVerbsBtn = document.getElementById('irregularVerbsBtn');
+    const verbsModal = document.getElementById('verbsModal');
+    const closeVerbsBtn = document.getElementById('closeVerbsBtn');
+    const verbsBody = document.getElementById('verbsBody');
+    const examModal = document.getElementById('examModal');
+    const examTitle = document.getElementById('examTitle');
+    const examBody = document.getElementById('examBody');
+    const closeExamBtn = document.getElementById('closeExamBtn');
+    const submitExamBtn = document.getElementById('submitExamBtn');
+    const showExamAnswersBtn = document.getElementById('showExamAnswersBtn');
+    const wordPopup = document.getElementById('wordPopup');
+    const popupWord = document.getElementById('popupWord');
+    const popupBody = document.getElementById('popupBody');
+    const closePopupBtn = document.getElementById('closePopupBtn');
+    const pronounceBtn = document.getElementById('pronounceBtn');
+    const vocabModal = document.getElementById('vocabModal');
+    const closeVocabBtn = document.getElementById('closeVocabBtn');
+    const openVocabTrainerBtn = document.getElementById('openVocabTrainerBtn');
+    const vocabSearch = document.getElementById('vocabSearch');
+    const vocabResult = document.getElementById('vocabResult');
+    const vocabPronounceBtn = document.getElementById('vocabPronounceBtn');
+
+    let currentLesson = null;
+    let pages = [];
+    let currentPageIndex = 0;
+    let currentExam = null;
+
+    const clickSound = new Audio(); clickSound.src = ""; // مسیر صدای کلیک اگر خواستی
+
+    // --- Bindings ---
+    document.querySelectorAll('.lesson-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        playClick();
+        loadLesson(parseInt(btn.dataset.lesson,10));
+      });
+    });
+    document.querySelectorAll('.exam-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        playClick();
+        openExam(btn.dataset.exam);
+      });
+    });
+    musicBtn.addEventListener('click', ()=>{
+      playClick();
+      if(bgMusic.paused){ bgMusic.play().catch(()=>{}); musicBtn.textContent = "♫ موسیقی (در حال پخش)"; }
+      else{ bgMusic.pause(); musicBtn.textContent = "♫ موسیقی"; }
+    });
+    helpBtn.addEventListener('click', ()=> helpModal.classList.remove('hidden'));
+    closeHelpBtn.addEventListener('click', ()=> helpModal.classList.add('hidden'));
+    irregularVerbsBtn.addEventListener('click', ()=>{ renderVerbs(); verbsModal.classList.remove('hidden'); });
+    closeVerbsBtn.addEventListener('click', ()=> verbsModal.classList.add('hidden'));
+    closeExamBtn.addEventListener('click', ()=>{ examModal.classList.add('hidden'); currentExam=null; });
+    submitExamBtn.addEventListener('click', gradeExam);
+    showExamAnswersBtn.addEventListener('click', showExamAnswers);
+    prevPageBtn.addEventListener('click', ()=> turnPage(-1));
+    nextPageBtn.addEventListener('click', ()=> turnPage(1));
+    closePopupBtn.addEventListener('click', ()=> wordPopup.classList.add('hidden'));
+    pronounceBtn.addEventListener('click', ()=> pronounce(popupWord.textContent));
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='ArrowRight') turnPage(1);
+      if(e.key==='ArrowLeft') turnPage(-1);
+      if(e.key==='Escape'){
+        helpModal.classList.add('hidden'); verbsModal.classList.add('hidden'); examModal.classList.add('hidden');
+        wordPopup.classList.add('hidden'); vocabModal.classList.add('hidden');
+      }
+    });
+    openVocabTrainerBtn.addEventListener('click', ()=>{
+      vocabModal.classList.remove('hidden'); vocabSearch.value="";
+      vocabResult.innerHTML = `<div style="color:#9bb3cc">یک واژه انگلیسی وارد کنید...</div>`;
+    });
+    closeVocabBtn.addEventListener('click', ()=> vocabModal.classList.add('hidden'));
+    vocabSearch.addEventListener('input', ()=>{
+      const q = (vocabSearch.value||"").trim().toLowerCase();
+      if(!q){ vocabResult.innerHTML = `<div style="color:#9bb3cc">یک واژه انگلیسی وارد کنید...</div>`; return; }
+      const info = window.DICT[q];
+      if(!info){
+        vocabResult.innerHTML = `<div>ورودی برای "<b>${q}</b>" یافت نشد. می‌توانید آن را به DICT اضافه کنید.</div>`;
+      }else{
+        vocabResult.innerHTML = `
+          <div><b>واژه:</b> ${q}</div>
+          <div><b>معنی فارسی:</b> ${info.fa}</div>
+          <div><b>مترادف‌ها:</b> ${(info.syn||[]).join(", ")}</div>
+          <div><b>کلمات مرتبط:</b> ${(info.rel||[]).join(", ")}</div>
+          <div><b>مثال انگلیسی:</b> ${info.ex}</div>
+        `;
+      }
+    });
+    vocabPronounceBtn.addEventListener('click', ()=>{
+      const q = (vocabSearch.value||"").trim(); if(q) pronounce(q);
+    });
+
+    // --- Core functions ---
+    function playClick(){ if(clickSound.src){ clickSound.currentTime=0; clickSound.play().catch(()=>{});} }
+    function loadLesson(id){
+      const lesson = window.LESSONS.find(l=>l.id===id);
+      if(!lesson){ alert("Lesson not found."); return; }
+      currentLesson = lesson; startScreen.classList.add('hidden'); flipbookWrapper.classList.remove('hidden');
+      currentTitleEl.textContent = lesson.title; pages = buildPages(lesson); currentPageIndex = 0; renderFlipbook();
+    }
+    function buildPages(lesson){ return lesson.sections.map(sec=> sectionToPage(sec)); }
+    function renderFlipbook(){
+      flipbookEl.innerHTML = "";
+      pages.forEach((page, idx)=>{
+        const el = document.createElement('div'); el.className='page'; el.dataset.index=idx; el.innerHTML = page.html;
+        flipbookEl.appendChild(el);
+      });
+      bindPageEvents(); highlightCurrentPage();
+    }
+    function bindPageEvents(){
+      flipbookEl.querySelectorAll('.word').forEach(w=>{
+        w.addEventListener('click', ()=> showWordInfo(w.textContent.trim().toLowerCase()));
+      });
+      flipbookEl.querySelectorAll('.reveal-key').forEach(b=>{
+        b.addEventListener('click', ()=>{
+          const key = b.closest('.exercise-item').querySelector('.answer-key');
+          key.classList.toggle('show');
+        });
+      });
+      flipbookEl.querySelectorAll('.check-input').forEach(b=>{
+        b.addEventListener('click', ()=>{
+          const item = b.closest('.exercise-item');
+          const input = item.querySelector('input, textarea, select');
+          const key = (item.dataset.key||"").trim().toLowerCase();
+          if(!input) return;
+          const val = (input.value||"").trim().toLowerCase();
+          if(val===key || key.includes(val)){ input.classList.add('correct'); input.classList.remove('incorrect'); }
+          else{ input.classList.add('incorrect'); input.classList.remove('correct'); }
+        });
+      });
+      flipbookEl.querySelectorAll('.listen-btn').forEach(btn=>{
+        // audio element is adjacent; play directly
+        const audio = btn.nextElementSibling;
+        btn.addEventListener('click', ()=> audio && audio.play().catch(()=>{}));
+      });
+    }
+    function highlightCurrentPage(){
+      flipbookEl.querySelectorAll('.page').forEach((p,idx)=>{
+        p.classList.remove('page-turn-enter','page-turn-leave');
+        if(idx===currentPageIndex) p.classList.add('page-turn-enter'); else p.classList.add('page-turn-leave');
+      });
+    }
+    function turnPage(dir){
+      const next = currentPageIndex + dir; if(next<0 || next>=pages.length) return;
+      currentPageIndex = next; highlightCurrentPage();
+    }
+
+    function sectionToPage(sec){
+      const title = `<h2>${sec.title}</h2>`; let body = "";
+      if(sec.type==="conversation" || sec.type==="findIt" || sec.type==="languageMelody"){
+        if(sec.text){ body += `<div class="section"><h3>${sec.title}</h3><div class="text">${inlineWords(sec.text||"")}</div></div>`; }
+        if(sec.lines){ body += `<div class="section"><h3>Conversation</h3><div class="text">${inlineWords(sec.lines.join("<br/>"))}</div></div>`; }
+        if(sec.practice){ body += `<div class="section"><h3>Practice</h3><div class="text">${inlineWords(sec.practice.join("<br/>"))}</div></div>`; }
+      }
+      if(sec.type==="practice"){
+        body += `<div class="section"><h3>${sec.title}</h3>${sec.items.map(it=>`
+          <div class="exercise-item" data-key="${(it.a||'').toLowerCase()}">
+            <div><b>Q:</b> ${inlineWords(it.q)}</div>
+            <div class="exercise-controls">
+              <input type="text" placeholder="پاسخ خود را بنویسید"/>
+              <button class="btn check-input">بررسی</button>
+              <button class="btn outline-btn reveal-key">نمایش پاسخ</button>
+            </div>
+            <div class="answer-key"><b>Answer:</b> ${it.a}</div>
+          </div>
+        `).join("")}</div>`;
+      }
+      if(sec.type==="workbook"){
+        body += `<div class="section"><h3>${sec.title}</h3>
+          ${sec.items.map(it=>{
+            if(it.type==="choice"){
+              return `<div class="exercise-item" data-key="${(it.correct||'').toLowerCase()}">
+                <div><b>${inlineWords(it.q)}</b></div>
+                <div class="exercise-controls">
+                  <select>${extractOptions(it.q).map(o=>`<option value="${o.toLowerCase()}">${o}</option>`).join("")}</select>
+                  <button class="btn check-input">بررسی</button>
+                  <button class="btn outline-btn reveal-key">نمایش پاسخ</button>
+                </div>
+                <div class="answer-key"><b>Answer:</b> ${it.correct}</div>
+              </div>`;
+            }
+            if(it.type==="fill"){
+              return `<div class="exercise-item" data-key="${(it.key||'').toLowerCase()}">
+                <div><b>${inlineWords(it.q)}</b></div>
+                <div class="exercise-controls">
+                  <input type="text" placeholder="پاسخ را بنویسید"/>
+                  <button class="btn check-input">بررسی</button>
+                  <button class="btn outline-btn reveal-key">نمایش پاسخ</button>
+                </div>
+                <div class="answer-key"><b>Answer:</b> ${it.key}</div>
+              </div>`;
+            }
+            if(it.type==="unscramble"){
+              return `<div class="exercise-item" data-key="${(it.key||'').toLowerCase()}">
+                <div><b>بازچینی:</b> ${inlineWords(it.q)}</div>
+                <div class="exercise-controls">
+                  <input type="text" placeholder="جمله صحیح را بنویسید"/>
+                  <button class="btn check-input">بررسی</button>
+                  <button class="btn outline-btn reveal-key">نمایش پاسخ</button>
+                </div>
+                <div class="answer-key"><b>Answer:</b> ${it.key}</div>
+              </div>`;
+            }
+            return "";
+          }).join("")}
+        </div>`;
+      }
+      if(sec.type==="grammar"){
+        body += `<div class="section"><h3>${sec.title}</h3>
+          ${sec.blocks.map(b=>`
+            <div class="exercise-item">
+              <div><b>${b.label}:</b> ${inlineWords(b.text)}</div>
+              <div class="exercise-controls">
+                <button class="btn outline-btn" onclick="alert('${escapeJs(b.text)}')">نمایش توضیحات</button>
+              </div>
+            </div>
+          `).join("")}
+        </div>`;
+      }
+      if(sec.type==="listeningCard"){
+        body += `
+          <div class="listening-card">
+            <h2>🎧 ${sec.title}</h2>
+            <p class="listening-text">${nl2br(inlineWords(sec.text||""))}</p>
+            <button class="listen-btn">▶ پخش صوت</button>
+            <audio src="${sec.audio}"></audio>
+          </div>
+        `;
+      }
+      if(sec.type==="photoDict"){
+        body += `<div class="section"><h3>${sec.title}</h3>
+          <div class="photo-dict-grid">
+            ${sec.phrases.map(p=>`
+              <div class="phrase-card">
+                <div><b>${p.en}</b></div>
+                <div class="muted">${p.fa}</div>
+                <div class="phrase-actions">
+                  <button class="btn small" onclick="pronounce('${sanitizeTTS(p.en)}')">🔊 تلفظ</button>
+                  <button class="btn small" onclick="alert('Example: ${escapeJs(p.ex)}\\nمثال: ${escapeJs(p.fa)}')">مثال</button>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </div>`;
+      }
+      return { html: `${title}${body}` };
+    }
+
+    function inlineWords(text){
+      return String(text).replace(/\b([A-Za-z][A-Za-z\-']+)\b/g,(m)=>`<span class="word">${m}</span>`);
+    }
+    function nl2br(str){ return String(str).replace(/\n/g,"<br/>"); }
+    function escapeJs(s){ return String(s).replace(/['"]/g,''); }
+    function sanitizeTTS(s){ return String(s).replace(/[^\w\s\-']/g,''); }
+
+    function showWordInfo(word){
+      const info = window.DICT[word];
+      popupWord.textContent = word;
+      popupBody.innerHTML = info ? `
+        <div class="row"><span class="label">معنی فارسی:</span> <span class="value">${info.fa}</span></div>
+        <div class="row"><span class="label">مترادف‌ها:</span> <span class="value">${(info.syn||[]).join(", ")}</span></div>
+        <div class="row"><span class="label">کلمات مرتبط:</span> <span class="value">${(info.rel||[]).join(", ")}</span></div>
+        <div class="row"><span class="label">مثال انگلیسی:</span> <span class="value">${info.ex}</span></div>
+        <div class="row"><span class="label">معنای ساده:</span> <span class="value">این کلمه یعنی "${info.fa}".</span></div>
+      ` : `
+        <div class="row"><span class="label">واژه موجود نیست:</span> <span class="value">می‌توانید "${word}" را به DICT اضافه کنید.</span></div>
+      `;
+      wordPopup.classList.remove('hidden');
+    }
+
+    function pronounce(text){
+      if(!window.speechSynthesis){ alert("Speech Synthesis پشتیبانی نمی‌شود."); return; }
+      const u = new SpeechSynthesisUtterance(text); u.lang = 'en-US'; window.speechSynthesis.speak(u);
+    }
+
+    function extractOptions(q){
+      const m = q.match(/([A-Za-z']+)\s*\/\s*([A-Za-z']+)/);
+      return m ? [m[1], m[2]] : ["Yes","No"];
+    }
+
+    // --- Exams rendering ---
+    function openExam(key){
+      const exam = window.EXAMS[key]; if(!exam){ alert("Exam not found."); return; }
+      currentExam = exam; examTitle.textContent = exam.title;
+      examBody.innerHTML = exam.questions.map((q,i)=>renderExamQuestion(q,i)).join("");
+      examModal.classList.remove('hidden');
+    }
+    function renderExamQuestion(q, idx){
+      if(q.type==="mc"){
+        return `<div class="exam-question" data-index="${idx}" data-key="${(q.key||'').toLowerCase()}">
+          <h4>Q${idx+1}. ${q.q}</h4>
+          ${q.opts.map(o=>`
+            <label style="display:block;margin:4px 0;">
+              <input type="radio" name="q${idx}" value="${o.toLowerCase()}"/> ${o}
+            </label>
+          `).join("")}
+        </div>`;
+      }
+      if(q.type==="fill"){
+        return `<div class="exam-question" data-index="${idx}" data-key="${(q.key||'').toLowerCase()}">
+          <h4>Q${idx+1}. ${q.q}</h4>
+          <input type="text" placeholder="پاسخ خود را بنویسید"/>
+        </div>`;
+      }
+      if(q.type==="short"){
+        return `<div class="exam-question" data-index="${idx}">
+          <h4>Q${idx+1}. ${q.q}</h4>
+          <textarea rows="3" placeholder="پاسخ تشریحی خود را بنویسید"></textarea>
+        </div>`;
+      }
+      if(q.type==="match"){
+        return `<div class="exam-question" data-index="${idx}">
+          <h4>Q${idx+1}. ${q.q}</h4>
+          <div class="text">${q.pairs.map(p=>`<div>• ${p[0]} — ${p[1]}</div>`).join("")}</div>
+        </div>`;
+      }
+      return "";
+    }
+    function gradeExam(){
+      if(!currentExam) return;
+      const questions = examBody.querySelectorAll('.exam-question');
+      let score=0,total=0;
+      questions.forEach(q=>{
+        const key = (q.dataset.key||"").trim();
+        const radios = q.querySelectorAll('input[type="radio"]');
+        const input = q.querySelector('input[type="text"]');
+        if(radios.length){
+          total++;
+          const chosen = [...radios].find(r=>r.checked);
+          if(chosen && chosen.value===key){ score++; q.classList.add('correct'); } else{ q.classList.add('incorrect'); }
+        }else if(input){
+          total++;
+          const val = (input.value||"").trim().toLowerCase();
+          if(val===key){ score++; q.classList.add('correct'); } else{ q.classList.add('incorrect'); }
+        }
+      });
+      alert(`نمره‌ی بخش خودکار: ${score} از ${total}. سوالات تشریحی/تطبیقی به صورت خودکار تصحیح نمی‌شوند.`);
+    }
+    function showExamAnswers(){
+      if(!currentExam) return;
+      const questions = examBody.querySelectorAll('.exam-question');
+      questions.forEach(q=>{
+        const key = (q.dataset.key||"").trim();
+        if(key){
+          const ans = document.createElement('div');
+          ans.style.marginTop='6px'; ans.style.color='#bde8ff'; ans.innerHTML=`<b>Answer:</b> ${key}`;
+          q.appendChild(ans);
+        }
+      });
+    }
+
+    // --- Verbs rendering ---
+    function renderVerbs(){
+      verbsBody.innerHTML = window.IRREGULAR_VERBS.map(v=>`
+        <div class="verb-card">
+          <div class="verb-head">
+            <div class="forms">${v.base} → ${v.past}</div>
+            <div class="actions">
+              <button class="btn small" onclick="pronounce('${sanitizeTTS(v.base)}')">🔊 base</button>
+              <button class="btn small" onclick="pronounce('${sanitizeTTS(v.past)}')">🔊 past</button>
+            </div>
+          </div>
+          <div class="verb-ex">
+            <div><b>Example (EN):</b> ${v.exEn}</div>
+            <div><b>مثال (FA):</b> ${v.exFa}</div>
+          </div>
+        </div>
+      `).join("");
+    }
+  </script>
+</body>
+</html>
